@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float speed = 5.0f;
+    public GameObject laserPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,15 @@ public class Player : MonoBehaviour
     void Update()
     {
         movement();
+        shooting();
+    }
+
+    private void shooting()
+    {
+       if(Input.GetKeyDown(KeyCode.Space))
+       {
+            Instantiate(laserPrefab,transform.position + new Vector3(0,0.88f,0),Quaternion.identity);
+       }     
     }
 
 
