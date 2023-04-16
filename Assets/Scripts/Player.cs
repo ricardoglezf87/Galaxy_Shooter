@@ -5,7 +5,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 5.0f;
+    private float _speed = 5.0f;
+    
+    [SerializeField]
+    private GameObject _laserPrefab;
+    
+    [SerializeField]
+    private float _fireRate = 0.25f;    
+    
+    private float _nextFire = 0.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -14,21 +22,28 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0,0,0);
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
-        movement();
+        move();
+        shoot();
     }
 
+    private void shoot()
+    {
+       if((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0)) && Time.time > _nextFire)
+       {
+            _nextFire = Time.time + _fireRate;
+            Instantiate(_laserPrefab,transform.position + new Vector3(0,0.88f,0),Quaternion.identity);
+       }     
+    }
 
-    private void movement()
+    private void move()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * speed);
-        transform.Translate(Vector3.up * verticalInput * Time.deltaTime * speed);
+        transform.Translate(Vector3.right * horizontalInput * Time.deltaTime * _speed);
+        transform.Translate(Vector3.up * verticalInput * Time.deltaTime * _speed);
 
         //Limits
 
